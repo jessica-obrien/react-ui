@@ -115,19 +115,25 @@ export const ConfigProviders = ({ children }: ProviderMocks) => {
  * @returns
  */
 export const SuspendedProviders = ({ children }: ProviderMocks) => {
+  const Fallback = () => {
+    return <>LOADING...</>
+  }
+
   return (
     <HashRouter>
-      <ServerConfigContainer.Provider>
-        <DebugContainer.Provider>
-          <SocketContainer.Provider>
-            <AuthContainer.Provider>
-              <PermissionsContainer.Provider>
-                <Suspense fallback={<>LOADING...</>}>{children}</Suspense>
-              </PermissionsContainer.Provider>
-            </AuthContainer.Provider>
-          </SocketContainer.Provider>
-        </DebugContainer.Provider>
-      </ServerConfigContainer.Provider>
+      <ErrorBoundary>
+        <ServerConfigContainer.Provider>
+          <DebugContainer.Provider>
+            <SocketContainer.Provider>
+              <AuthContainer.Provider>
+                <PermissionsContainer.Provider>
+                  <Suspense fallback={<Fallback />}>{children}</Suspense>
+                </PermissionsContainer.Provider>
+              </AuthContainer.Provider>
+            </SocketContainer.Provider>
+          </DebugContainer.Provider>
+        </ServerConfigContainer.Provider>
+      </ErrorBoundary>
     </HashRouter>
   )
 }
