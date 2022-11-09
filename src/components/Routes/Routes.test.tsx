@@ -43,6 +43,20 @@ describe('Routes', () => {
     expect(header.textContent).toEqual('Systems')
   })
 
+  describe('auth not enabled', () => {
+    test('Users', async () => {
+      render(
+        <MemoryProvider startLocation={['/admin/users']}>
+          <Routes />
+        </MemoryProvider>,
+      )
+      await waitFor(() =>
+        expect(
+          screen.queryByRole('heading', { name: 'User Management' }),
+        ).not.toBeInTheDocument(),
+      )
+    })
+
     test('Job', async () => {
       render(
         <MemoryProvider startLocation={['/jobs']}>
@@ -107,21 +121,21 @@ describe('Routes', () => {
     })
 
     describe('does not have access', () => {
-      // test('Users', async () => {
-      //   render(
-      //     <LoggedInMemory startLocation={['/admin/users']}>
-      //       <Routes />
-      //     </LoggedInMemory>,
-      //   )
-      //   await waitFor(() =>
-      //     expect(
-      //       screen.queryByRole('heading', { name: 'User Management' }),
-      //     ).not.toBeInTheDocument(),
-      //   )
-      //   expect(
-      //     screen.getByRole('heading', { name: 'Systems' }),
-      //   ).toBeInTheDocument()
-      // })
+      test('Users', async () => {
+        render(
+          <LoggedInMemory startLocation={['/admin/users']}>
+            <Routes />
+          </LoggedInMemory>,
+        )
+        await waitFor(() =>
+          expect(
+            screen.queryByRole('heading', { name: 'User Management' }),
+          ).not.toBeInTheDocument(),
+        )
+        expect(
+          screen.getByRole('heading', { name: 'Systems' }),
+        ).toBeInTheDocument()
+      })
 
       test('Job', async () => {
         render(
