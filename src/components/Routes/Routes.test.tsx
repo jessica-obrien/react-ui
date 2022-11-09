@@ -33,24 +33,15 @@ describe('Routes', () => {
         <Routes />
       </SuspendedProviders>,
     )
+    // eslint-disable-next-line testing-library/prefer-find-by
+    await waitFor(() =>
+      expect(
+        screen.getByRole('heading', { name: 'Systems' }),
+      ).toBeInTheDocument(),
+    )
     const header = await screen.findByRole('heading', { name: 'Systems' })
-    expect(header).toBeInTheDocument()
     expect(header.textContent).toEqual('Systems')
   })
-
-  describe('auth not enabled', () => {
-    test('Users', async () => {
-      render(
-        <MemoryProvider startLocation={['/admin/users']}>
-          <Routes />
-        </MemoryProvider>,
-      )
-      await waitFor(() =>
-        expect(
-          screen.queryByRole('heading', { name: 'User Management' }),
-        ).not.toBeInTheDocument(),
-      )
-    })
 
     test('Job', async () => {
       render(
